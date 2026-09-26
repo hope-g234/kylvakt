@@ -13,3 +13,5 @@
 
 - Sensor data is preprocessed offline (Python) into src/data/*.json and bundled; the app has no database — hackathon dataset is static.
 - AI assistant streams via server route /api/chat (src/lib/coldwatch-chat.server.ts) with the week's triage JSON as context — keeps key server-side and answers grounded in computed evidence.
+
+- ColdWatch uses a single route with state-driven operational views so the selected week and assistant context remain stable across the demo journey.
