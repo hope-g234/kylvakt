@@ -11,7 +11,7 @@ export function Evidence({ leak, week }: { leak: Leak; week: string }) {
   const s = leak.signals;
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <Chart title={`Cooling duty % — ${s.duty}`} note={`Baseline ${leak.baseDuty}% → now ${leak.duty}%`}>
+      <Chart title={`Cooling duty % — ${s["duty"]}`} note={`Baseline ${leak.baseDuty}% → now ${leak.duty}%`}>
         <ComposedChart data={rows}>
           <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" />
           <XAxis dataKey="d" {...axis} tickFormatter={(d) => d.slice(5)} minTickGap={24} />
@@ -22,7 +22,7 @@ export function Evidence({ leak, week }: { leak: Leak; week: string }) {
           <Line dataKey="base" name="Own baseline" stroke="var(--muted-foreground)" strokeDasharray="4 4" dot={false} />
         </ComposedChart>
       </Chart>
-      <Chart title={`Temp vs setpoint °C — ${s.cpt} − ${s.sp ?? "median"}`} note={`Avg deviation ${leak.tempDev > 0 ? "+" : ""}${leak.tempDev}°C (baseline ${leak.baseTempDev}°C)`}>
+      <Chart title={`Temp vs setpoint °C — ${s["cpt"]} − ${s["sp"] ?? "median"}`} note={`Avg deviation ${leak.tempDev > 0 ? "+" : ""}${leak.tempDev}°C (baseline ${leak.baseTempDev}°C)`}>
         <ComposedChart data={rows}>
           <CartesianGrid stroke="var(--border)" strokeDasharray="3 3" />
           <XAxis dataKey="d" {...axis} tickFormatter={(d) => d.slice(5)} minTickGap={24} />

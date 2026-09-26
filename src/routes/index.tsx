@@ -89,7 +89,7 @@ function Index() {
                   const go = l.costOfWaiting4w > l.serviceCost;
                   return (
                     <tr key={l.unit} className="border-t border-border">
-                      <td className="p-3 font-medium">{englishName(l.name)}<div className="font-mono text-xs text-muted-foreground">{l.signals.duty}</div></td>
+                      <td className="p-3 font-medium">{englishName(l.name)}<div className="font-mono text-xs text-muted-foreground">{l.signals["duty"]}</div></td>
                       <td className="p-3 font-mono">{l.slopePerWeek > 0 ? "+" : ""}{l.slopePerWeek} pts/wk</td>
                       <td className="p-3 font-mono">{l.weeksToSaturation != null ? `${l.weeksToSaturation} wks` : "—"}</td>
                       <td className="p-3 font-mono">{Math.round(l.failureRisk * 100)}%</td>

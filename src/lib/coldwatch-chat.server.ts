@@ -8,7 +8,7 @@ export async function handleColdWatchChat(request: Request) {
   const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) return new Response("AI is not configured", { status: 500 });
   const body = (await request.json()) as { messages: UIMessage[]; week?: string };
-  const week = body.week && (data.leaks as Record<string, unknown>)[body.week] ? body.week : data.weeks[data.weeks.length - 1];
+  const week = body.week && (data.leaks as Record<string, unknown>)[body.week] ? body.week : (data.weeks[data.weeks.length - 1] ?? "");
   const leaks = (data.leaks as Record<string, unknown[]>)[week];
   const plantWeek = data.plant.filter((d) => d.d >= week && d.d < addDays(week, 7));
 
