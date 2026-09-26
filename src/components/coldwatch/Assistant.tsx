@@ -37,7 +37,7 @@ export function Assistant({ week }: { week: string }) {
         {error && <p className="text-sm text-destructive">{error.message || "Something went wrong."}</p>}
       </div>
       <form onSubmit={(e) => { e.preventDefault(); send(input); }} className="flex gap-2 border-t border-border p-3">
-        <Textarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask Cold Watch…" rows={2} className="resize-none"
+        <Textarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask Kylvakt…" rows={2} className="resize-none"
           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }} />
         <Button type="submit" size="icon" disabled={busy || !input.trim()} aria-label="Send"><Send /></Button>
       </form>
