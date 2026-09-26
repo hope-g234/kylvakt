@@ -1,3 +1,4 @@
+import { StoreInsights } from "@/components/coldwatch/StoreInsights";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
