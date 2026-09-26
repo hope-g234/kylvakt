@@ -20,9 +20,9 @@ import { addDays, assumptions, englishName, eur, fmtWeek, leaksByWeek, plantWeek
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ColdWatch — Wettbergen operations command center" },
+      { title: "Kylvakt — Wettbergen operations command center" },
       { name: "description", content: "Prioritized refrigeration and energy decisions for Wettbergen Store, backed by measured evidence." },
-      { property: "og:title", content: "ColdWatch — Wettbergen operations command center" },
+      { property: "og:title", content: "Kylvakt — Wettbergen operations command center" },
       { property: "og:description", content: "From 451 store signals to the few energy and refrigeration decisions that matter." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -56,7 +56,7 @@ function Index() {
   const pw = plantWeek(week);
 
   useEffect(() => {
-    const savedTheme = window.localStorage.getItem("coldwatch-theme");
+    const savedTheme = window.localStorage.getItem("kylvakt-theme") ?? window.localStorage.getItem("coldwatch-theme");
     const shouldUseDark = savedTheme !== "light";
     setDarkTheme(shouldUseDark);
     document.documentElement.classList.toggle("dark", shouldUseDark);
@@ -68,7 +68,7 @@ function Index() {
     setDarkTheme(nextDarkTheme);
     document.documentElement.classList.toggle("dark", nextDarkTheme);
     document.documentElement.style.colorScheme = nextDarkTheme ? "dark" : "light";
-    window.localStorage.setItem("coldwatch-theme", nextDarkTheme ? "dark" : "light");
+    window.localStorage.setItem("kylvakt-theme", nextDarkTheme ? "dark" : "light");
   };
 
   const changeView = (next: View) => { setSelected(null); setView(next); setMobileNav(false); };
@@ -116,7 +116,7 @@ function Index() {
             >
               <Lightbulb className={darkTheme ? "text-muted-foreground" : "fill-warning/25 text-warning"} />
             </Button>
-            <Button variant="secondary" size="sm" onClick={() => setChat(true)}><MessageSquare /> <span className="hidden sm:inline">Ask ColdWatch</span></Button>
+            <Button variant="secondary" size="sm" onClick={() => setChat(true)}><MessageSquare /> <span className="hidden sm:inline">Ask Kylvakt</span></Button>
           </div>
         </header>
 
@@ -138,7 +138,7 @@ function Index() {
       </Sheet>
       <Sheet open={chat} onOpenChange={setChat}>
         <SheetContent className="flex w-full flex-col border-border bg-background p-0 sm:max-w-md">
-          <SheetHeader className="border-b border-border p-4"><SheetTitle className="flex items-center gap-2"><Bot className="size-4 text-info" /> Ask ColdWatch</SheetTitle></SheetHeader>
+          <SheetHeader className="border-b border-border p-4"><SheetTitle className="flex items-center gap-2"><Bot className="size-4 text-info" /> Ask Kylvakt</SheetTitle></SheetHeader>
           <div className="min-h-0 flex-1"><Assistant key={week} week={week} /></div>
         </SheetContent>
       </Sheet>
@@ -147,7 +147,7 @@ function Index() {
 }
 
 function Brand() {
-  return <div className="flex h-16 items-center gap-3 border-b border-border px-5"><div className="grid size-9 place-items-center rounded-md border border-info/25 bg-info/10 text-info"><Snowflake className="size-5" /></div><div><p className="text-base font-bold">ColdWatch<span className="text-info">.</span></p><p className="text-[10px] uppercase tracking-widest text-muted-foreground">Operations intelligence</p></div></div>;
+  return <div className="flex h-16 items-center gap-3 border-b border-border px-5"><div className="grid size-9 place-items-center rounded-md border border-info/25 bg-info/10 text-info"><Snowflake className="size-5" /></div><div><p className="text-base font-bold">Kylvakt<span className="text-info">.</span></p><p className="text-[10px] uppercase tracking-widest text-muted-foreground">Operations intelligence</p></div></div>;
 }
 
 function NavItem({ item, active, onClick }: { item: { id: View; label: string; icon: typeof Activity }; active: boolean; onClick: () => void }) {
@@ -240,4 +240,4 @@ function Issues({ leaks, onInvestigate }: { leaks: Leak[]; onInvestigate: (l: Le
 function Actions({ leaks, onInvestigate }: { leaks: Leak[]; onInvestigate: (l: Leak) => void }) { return <><PageHeading eyebrow="Maintenance queue" title="Actions" body="Inspection work is ordered by the estimated cost of waiting versus a service visit." /><div className="panel overflow-hidden"><div className="divide-y divide-border">{leaks.filter((l) => l.costOfWaiting4w > l.serviceCost).map((leak) => <div key={leak.unit} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center"><div className="grid size-9 place-items-center rounded-md bg-warning/10 text-warning"><Wrench className="size-4" /></div><div className="flex-1"><p className="text-sm font-semibold">Inspect {englishName(leak.name)}</p><p className="text-xs text-muted-foreground">Wait 4 weeks: {eur(leak.costOfWaiting4w)} · Service: {eur(leak.serviceCost)}</p></div><Button variant="outline" size="sm" onClick={() => onInvestigate(leak)}>Open brief</Button></div>)}</div></div></>; }
 function Reports({ week, leaks }: { week: string; leaks: Leak[] }) { const data = leaks.slice(0, 7).map((l) => ({ name: englishName(l.name).split(" ").slice(0, 2).join(" "), cost: l.eurMonth })); return <><PageHeading eyebrow={`Week of ${fmtWeek(week)}`} title="Operations report" body="A concise weekly summary of avoidable energy cost and equipment risk." /><div className="grid gap-5 xl:grid-cols-[1.2fr_.8fr]"><div className="panel p-5"><h2 className="text-base font-semibold">Estimated monthly impact by unit</h2><div className="mt-4 h-80"><ResponsiveContainer><BarChart data={data} layout="vertical"><CartesianGrid stroke="var(--border)" horizontal={false} /><XAxis type="number" stroke="var(--muted-foreground)" fontSize={10} /><YAxis dataKey="name" type="category" width={100} stroke="var(--muted-foreground)" fontSize={10} /><Tooltip contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)" }} /><Bar dataKey="cost" fill="var(--warning)" radius={[0, 3, 3, 0]} /></BarChart></ResponsiveContainer></div></div><div className="panel p-5"><p className="label">Executive note</p><p className="mt-4 text-lg font-semibold">{leaks.length} units need review this week.</p><p className="mt-3 text-sm leading-relaxed text-muted-foreground">The top five represent approximately {eur(leaks.slice(0,5).reduce((a,l)=>a+l.eurMonth,0))} per month in modelled excess electricity. These are estimates, not guaranteed savings.</p><Button className="mt-6 w-full"><FileText /> Export brief</Button></div></div></>; }
 function SettingsView() { return <><PageHeading eyebrow="Store model" title="Settings" body="The assumptions below make estimates transparent and auditable." /><div className="panel divide-y divide-border">{[["Electricity model", assumptions.tariff], ["Opening hours", assumptions.hours], ["Service visit", eur(assumptions.service)]].map(([k,v]) => <div key={k} className="flex flex-col gap-1 p-5 sm:flex-row sm:items-center sm:justify-between"><p className="text-sm font-semibold">{k}</p><p className="text-sm text-muted-foreground">{v}</p></div>)}</div></>; }
-function DataQuality() { const chart = [{ name: "Usable", value: 84 }, { name: "Missing", value: 16 }]; return <><PageHeading eyebrow="Evidence integrity" title="Data quality" body="ColdWatch never silently treats a missing reading as a normal reading." /><div className="grid gap-5 md:grid-cols-3"><div className="panel p-5 md:col-span-2"><div className="grid gap-3 sm:grid-cols-3"><Metric label="Data coverage" value="84%" sub="usable readings" tone="info" /><Metric label="Signals" value="451" sub="hourly channels" /><Metric label="Time span" value="8,760 h" sub="2015 calendar year" /></div><div className="mt-6 rounded-md border border-border bg-secondary/40 p-4"><p className="text-sm font-semibold">How missing data is handled</p><p className="mt-2 text-xs leading-relaxed text-muted-foreground">Missing values are removed before a unit is compared with its baseline. An issue needs enough measured history to be ranked.</p></div></div><div className="panel p-5"><p className="label">Coverage</p><div className="h-48"><ResponsiveContainer><PieChart><Pie data={chart} dataKey="value" innerRadius={55} outerRadius={72} paddingAngle={2}>{chart.map((_, i) => <Cell key={i} fill={i === 0 ? "var(--info)" : "var(--secondary)"} />)}</Pie></PieChart></ResponsiveContainer></div><div className="flex justify-center gap-5 text-xs"><span className="flex items-center gap-2"><i className="size-2 rounded-full bg-info" />Usable</span><span className="flex items-center gap-2 text-muted-foreground"><i className="size-2 rounded-full bg-secondary" />Missing</span></div></div></div></>; }
+function DataQuality() { const chart = [{ name: "Usable", value: 84 }, { name: "Missing", value: 16 }]; return <><PageHeading eyebrow="Evidence integrity" title="Data quality" body="Kylvakt never silently treats a missing reading as a normal reading." /><div className="grid gap-5 md:grid-cols-3"><div className="panel p-5 md:col-span-2"><div className="grid gap-3 sm:grid-cols-3"><Metric label="Data coverage" value="84%" sub="usable readings" tone="info" /><Metric label="Signals" value="451" sub="hourly channels" /><Metric label="Time span" value="8,760 h" sub="2025 calendar year" /></div><div className="mt-6 rounded-md border border-border bg-secondary/40 p-4"><p className="text-sm font-semibold">How missing data is handled</p><p className="mt-2 text-xs leading-relaxed text-muted-foreground">Missing values are removed before a unit is compared with its baseline. An issue needs enough measured history to be ranked.</p></div></div><div className="panel p-5"><p className="label">Coverage</p><div className="h-48"><ResponsiveContainer><PieChart><Pie data={chart} dataKey="value" innerRadius={55} outerRadius={72} paddingAngle={2}>{chart.map((_, i) => <Cell key={i} fill={i === 0 ? "var(--info)" : "var(--secondary)"} />)}</Pie></PieChart></ResponsiveContainer></div><div className="flex justify-center gap-5 text-xs"><span className="flex items-center gap-2"><i className="size-2 rounded-full bg-info" />Usable</span><span className="flex items-center gap-2 text-muted-foreground"><i className="size-2 rounded-full bg-secondary" />Missing</span></div></div></div></>; }
