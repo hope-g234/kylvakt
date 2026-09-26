@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, ComposedChart, Line,
   Pie, PieChart, ReferenceArea, ResponsiveContainer, Tooltip, XAxis, YAxis,
@@ -7,7 +7,7 @@ import {
 import {
   Activity, AlertTriangle, ArrowLeft, ArrowRight, BarChart3, Bell, Bot,
   Check, CheckCircle2, ChevronRight, ClipboardCheck, Database, FileText,
-  Gauge, HelpCircle, LayoutDashboard, Menu, MessageSquare, PackageCheck,
+  Gauge, HelpCircle, LayoutDashboard, Lightbulb, Menu, MessageSquare, PackageCheck,
   PanelLeftClose, Search, Settings, Snowflake, Thermometer, Wrench, X, Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -51,8 +51,25 @@ function Index() {
   const [selected, setSelected] = useState<Leak | null>(null);
   const [chat, setChat] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(true);
   const leaks = leaksByWeek[week] ?? [];
   const pw = plantWeek(week);
+
+  useEffect(() => {
+    const savedTheme = window.localStorage.getItem("coldwatch-theme");
+    const shouldUseDark = savedTheme !== "light";
+    setDarkTheme(shouldUseDark);
+    document.documentElement.classList.toggle("dark", shouldUseDark);
+    document.documentElement.style.colorScheme = shouldUseDark ? "dark" : "light";
+  }, []);
+
+  const toggleTheme = () => {
+    const nextDarkTheme = !darkTheme;
+    setDarkTheme(nextDarkTheme);
+    document.documentElement.classList.toggle("dark", nextDarkTheme);
+    document.documentElement.style.colorScheme = nextDarkTheme ? "dark" : "light";
+    window.localStorage.setItem("coldwatch-theme", nextDarkTheme ? "dark" : "light");
+  };
 
   const changeView = (next: View) => { setSelected(null); setView(next); setMobileNav(false); };
   const title = selected ? "Issue investigation" : nav.find((item) => item.id === view)?.label ?? "Overview";
@@ -89,6 +106,16 @@ function Index() {
               </Select>
               <Button variant="outline" size="icon" aria-label="Notifications"><Bell /></Button>
             </div>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={toggleTheme}
+              aria-label={darkTheme ? "Switch to light theme" : "Switch to dark theme"}
+              aria-pressed={!darkTheme}
+              title={darkTheme ? "Switch to light theme" : "Switch to dark theme"}
+            >
+              <Lightbulb className={darkTheme ? "text-muted-foreground" : "fill-warning/25 text-warning"} />
+            </Button>
             <Button variant="secondary" size="sm" onClick={() => setChat(true)}><MessageSquare /> <span className="hidden sm:inline">Ask ColdWatch</span></Button>
           </div>
         </header>
