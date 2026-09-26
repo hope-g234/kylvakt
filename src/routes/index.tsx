@@ -23,8 +23,13 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const defaultWeek = [...weeks].sort((a, b) => score(b) - score(a))[0] ?? "";
+function score(w: string) {
+  return (leaksByWeek[w] ?? []).slice(0, 5).reduce((a, l) => a + l.eurMonth, 0);
+}
+
 function Index() {
-  const [week, setWeek] = useState<string>(weeks[weeks.length - 5] ?? weeks[0] ?? "");
+  const [week, setWeek] = useState<string>(defaultWeek);
   const [chat, setChat] = useState(false);
   const leaks = leaksByWeek[week] ?? [];
   const top = leaks.slice(0, 5);
