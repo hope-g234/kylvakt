@@ -104,6 +104,8 @@ For the whole store, an hour counts as **unusual** when cooling use is more than
 
 This section explains exactly how each number is calculated. The same rules are applied by hand-checked scripts that turn the raw sensor file into the figures the site shows; nothing is invented.
 
+For the exact formulas, the glossary of terms and the reasoning behind each choice, see [Formulas, terms and why we chose them](./formulas-and-terms.md).
+
 ### 1. Per-unit analysis (runs every week, for every unit)
 
 **Step 1 — Build the daily history.** For each unit, the cooling signal, the actual temperature, the target temperature, defrost activity and the collective alarm are averaged into daily values for the whole year. A unit needs at least 2,000 hourly readings to be included at all; weeks with fewer than 4 days of data, and reference windows with fewer than 14 days, are skipped rather than guessed.
