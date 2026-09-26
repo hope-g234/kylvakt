@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [week, setWeek] = useState(weeks[weeks.length - 5] ?? weeks[0]);
+  const [week, setWeek] = useState<string>(weeks[weeks.length - 5] ?? weeks[0] ?? "");
   const [chat, setChat] = useState(false);
   const leaks = leaksByWeek[week] ?? [];
   const top = leaks.slice(0, 5);
