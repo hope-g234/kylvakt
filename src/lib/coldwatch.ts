@@ -14,8 +14,14 @@ export type UnitDay = { d: string; duty: number | null; cpt: number | null; sp: 
 export const store = data.store;
 export const weeks: string[] = data.weeks;
 export const leaksByWeek = data.leaks as unknown as Record<string, Leak[]>;
-export const plant = data.plant;
+export type PlantDay = { d: string; kwh: number; base: number; out: number; price: number; kwhOpen?: number; kwhClosed?: number; baseOpen?: number; baseClosed?: number; anomOpen?: number; anomClosed?: number };
+export type HourRow = { h: number; open: boolean; kwh: number; base: number; anom: number };
+export type MonthRow = { m: string; kwh: number; base: number; openAvg: number; closedAvg: number; anomOpen: number; anomClosed: number };
+export const plant = data.plant as PlantDay[];
 export const assumptions = data.assumptions;
+export const hourly = data.hourly as unknown as Record<string, HourRow[]>;
+export const monthly = data.monthly as MonthRow[];
+export const openingHours = data.openingHours as { open: number; close: number; closedDays: string };
 export const daily = unitsDaily as unknown as Record<string, UnitDay[]>;
 
 const svName: Record<string, string> = {
