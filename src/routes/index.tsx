@@ -187,6 +187,7 @@ function Overview({ week, leaks, onInvestigate, onView }: { week: string; leaks:
         <div className="panel p-5"><div className="flex items-start justify-between"><div><p className="label">Data confidence</p><p className="mt-2 text-2xl font-semibold">84%</p></div><Database className="size-5 text-info" /></div><div className="mt-4 h-1.5 overflow-hidden rounded-full bg-secondary"><div className="h-full w-[84%] bg-info" /></div><p className="mt-3 text-xs leading-relaxed text-muted-foreground">451 hourly signals reviewed. Missing readings are excluded from comparisons.</p><Button variant="ghost" size="sm" className="mt-3 px-0 text-info" onClick={() => onView("quality")}>Review data quality <ChevronRight /></Button></div>
       </aside>
     </section>
+    <StoreInsights compact />
   </>;
 }
 
